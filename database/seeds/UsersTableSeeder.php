@@ -12,7 +12,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-         //初期ユーザーの登録(6/29)
+        //  初期ユーザーの登録(6/29)
         DB::table('users')->insert([
             [
                 'over_name' => '高橋',
