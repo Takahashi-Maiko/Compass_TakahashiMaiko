@@ -14,5 +14,6 @@ class DatabaseSeeder extends Seeder
 
     //  $this->call(UsersTableSeeder::class);
     //  $this->call(SubjectsTableSeeder::class);
+    // ↑↑シードするために記述(6/29)
     }
 }

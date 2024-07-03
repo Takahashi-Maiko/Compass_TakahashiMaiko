@@ -21,14 +21,14 @@ class SubjectsTableSeeder extends Seeder
             ]
             ]);
 
-                    DB::table('subjects')->insert([
+        DB::table('subjects')->insert([
             [
                 'subject' => '数学',
                 'created_at'=>now(),
             ]
             ]);
 
-                    DB::table('subjects')->insert([
+         DB::table('subjects')->insert([
             [
                 'subject' => '英語',
                 'created_at'=>now(),
