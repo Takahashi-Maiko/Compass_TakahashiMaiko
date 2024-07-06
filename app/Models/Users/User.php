@@ -67,7 +67,14 @@ class User extends Authenticatable
     }
 
     public function subjects(){
-        return $this->hasMany('App\Models\Users\Subjects');// リレーションの定義(subjectsテーブルとの)
+        return $this->belongsToMany('App\Models\Users\Subjects', 'subject_users', 'user_id', 'subject_id');
+    //　↑↑(2024/7/6)usersテーブルとsubjectsテーブルのリレーション(多対多)
+    //多対多のリレーションなのでbelongsToManyをメソッドとして使用。
+    //第一引数＝使用する相手のモデル
+    //第二引数＝使用するテーブル名
+    //第三引数＝リレーションを定義しているモデルの外部キー名
+    //第四引数＝結合するモデルの外部キー名
+
     }
 
     // いいねしているかどうか
