@@ -13,6 +13,9 @@
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 <body>
+
+
+
   <form action="{{ route('registerPost') }}" method="POST">
     <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
       <div class="w-25 vh-75 border p-3">
@@ -179,6 +182,19 @@
         <div class="mt-5 text-right">
           <input type="submit" class="btn btn-primary register_btn" disabled value="新規登録" onclick="return confirm('登録してよろしいですか？')">
         </div>
+
+<!-- バリデーションメッセージ(2024/7/7) -->
+@if ($errors->any())
+<div class="register_error">
+ <ul>
+  @foreach ($errors->all() as $error)
+  <li>{{ $error }}</li>
+  @endforeach
+ </ul>
+</div>
+@endif
+
+
         <div class="text-center">
           <a href="{{ route('loginView') }}">ログイン</a>
         </div>

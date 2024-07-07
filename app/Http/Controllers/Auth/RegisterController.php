@@ -13,6 +13,9 @@ use DB;
 
 use App\Models\Users\Subjects;
 
+//↓↓RegisterFormRequestを使用する為の記述(2024/7/6)
+use App\Http\Requests\RegisterFormRequest;
+
 class RegisterController extends Controller
 {
     /*
@@ -57,8 +60,12 @@ class RegisterController extends Controller
         return view('auth.register.register', compact('subjects'));
     }
 
-    public function registerPost(Request $request)
+
+    // ↓↓新規登録(POST通信)
+    public function registerPost(RegisterFormRequest $request)
     {
+         $validated = $request->validated();   //新規登録時のバリデーション
+
         DB::beginTransaction();
         try{
             $old_year = $request->old_year;
