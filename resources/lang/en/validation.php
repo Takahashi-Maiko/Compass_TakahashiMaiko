@@ -146,6 +146,21 @@ return [
     |
     */
 
-    'attributes' => [],
+    // ↓↓カラムの追加(2024/7/12)
+    'attributes' => [
+            'over_name' => '姓',
+            'under_name' => '名',
+            'over_name_kana' => 'セイ',
+            'under_name_kana' => 'メイ',
+            'mail_address' => 'メールアドレス',
+            'sex' => '性別',
+            'old_year' => '年',
+            'old_month' => '月',
+            'old_day' => '日',
+            'role' => '権限',
+            'password' => 'パスワード',
+            'password_confirmation' => 'パスワード確認',
+
+    ],
 
 ];
