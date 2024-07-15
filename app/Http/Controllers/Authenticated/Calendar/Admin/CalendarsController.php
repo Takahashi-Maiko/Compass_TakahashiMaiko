@@ -14,6 +14,7 @@ use DB;
 
 class CalendarsController extends Controller
 {
+    // ↓↓スクール予約確認(2024/7/15)
     public function show(){
         $calendar = new CalendarView(time());
         return view('authenticated.calendar.admin.calendar', compact('calendar'));
@@ -24,6 +25,7 @@ class CalendarsController extends Controller
         return view('authenticated.calendar.admin.reserve_detail', compact('reservePersons', 'date', 'part'));
     }
 
+    // ↓↓スクール枠登録(2024/7/15)
     public function reserveSettings(){
         $calendar = new CalendarSettingView(time());
         return view('authenticated.calendar.admin.reserve_setting', compact('calendar'));

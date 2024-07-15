@@ -25,14 +25,14 @@ Route::group(['middleware' => 'auth'], function () {
         });
         Route::namespace('Calendar')->group(function () {
             Route::namespace('General')->group(function () {
-                Route::get('/calendar/{user_id}', 'CalendarsController@show')->name('calendar.general.show');
+                Route::get('/calendar/{user_id}', 'CalendarsController@show')->name('calendar.general.show');//スクール予約
                 Route::post('/reserve/calendar', 'CalendarsController@reserve')->name('reserveParts');
                 Route::post('/delete/calendar', 'CalendarsController@delete')->name('deleteParts');
             });
             Route::namespace('Admin')->group(function () {
-                Route::get('/calendar/{user_id}/admin', 'CalendarsController@show')->name('calendar.admin.show');
+                Route::get('/calendar/{user_id}/admin', 'CalendarsController@show')->name('calendar.admin.show');//スクール予約確認
                 Route::get('/calendar/{date}/{part}', 'CalendarsController@reserveDetail')->name('calendar.admin.detail');
-                Route::get('/setting/{user_id}/admin', 'CalendarsController@reserveSettings')->name('calendar.admin.setting');
+                Route::get('/setting/{user_id}/admin', 'CalendarsController@reserveSettings')->name('calendar.admin.setting');//スクール枠登録
                 Route::post('/setting/update/admin', 'CalendarsController@updateSettings')->name('calendar.admin.update');
             });
         });

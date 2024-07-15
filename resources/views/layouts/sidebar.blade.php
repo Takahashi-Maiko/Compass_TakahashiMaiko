@@ -21,9 +21,16 @@
       @section('sidebar')
       <p><a href="{{ route('top.show') }}">トップ</a></p>
       <p><a href="/logout">ログアウト</a></p>
+
       <p><a href="{{ route('calendar.general.show',['user_id' => Auth::id()]) }}">スクール予約</a></p>
+
+      <!-- ↓↓AuthServiceProvider.phpの中に権限の設定の記述を記載している'(2024/7/15) -->
+      <!-- //↓↓講師アカウントにのみ表示させるための記述 role1～3のユーザーにしか表示されない(2024/7/15) -->
+      @can('admin_only')
       <p><a href="{{ route('calendar.admin.show',['user_id' => Auth::id()]) }}">スクール予約確認</a></p>
       <p><a href="{{ route('calendar.admin.setting',['user_id' => Auth::id()]) }}">スクール枠登録</a></p>
+      @endcan
+
       <p><a href="{{ route('post.show') }}">掲示板</a></p>
       <p><a href="{{ route('user.show') }}">ユーザー検索</a></p>
       @show

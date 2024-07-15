@@ -13,6 +13,12 @@
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
 </head>
 <body>
+
+<!-- ↓↓タイムアウトしたときにログイン画面へ飛ばす記述・Handle.phpにも記述54行目(2024/7/15) -->
+@if(session()->has('csrfError'))
+    <p>タイムアウトしました</p>
+@endif
+
   <form action="{{ route('loginPost') }}" method="POST">
     <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
       <div class="border vh-50 w-25">

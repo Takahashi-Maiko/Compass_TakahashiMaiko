@@ -211,20 +211,18 @@
         </div>
 
         <div class="mt-3">
-          @if ($errors->has('password'))
-           <li>{{$errors->first('password')}}</li>
+          @if ($errors->has('password_confirmation'))
+           <li>{{$errors->first('password_confirmation')}}</li>
           @endif
           <label class="d-block m-0" style="font-size:13px">確認用パスワード</label>
           <div class="border-bottom border-primary">
-            <input type="password" class="border-0 w-100 password_confirmation" name="password">
+            <input type="password" class="border-0 w-100 password_confirmation" name="password_confirmation">
           </div>
         </div>
 
         <div class="mt-5 text-right">
           <input type="submit" class="btn btn-primary register_btn" disabled value="新規登録" onclick="return confirm('登録してよろしいですか？')">
         </div>
-
-<!-- バリデーションメッセージ(2024/7/7) -->
 
 
         <div class="text-center">
