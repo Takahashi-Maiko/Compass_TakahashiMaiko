@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\session\TolenMismatchException;
 
 class Handler extends ExceptionHandler
 {
@@ -51,11 +52,10 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
 
-         // csrf例外だった場合はログイン画面に飛ばす。login.bladeの18行目でメッセージ表示。(2024/7/15)
-    if ($exception instanceof \Illuminate\Session\TokenMismatchException){
-        session()->flash('csrfError', true);
-        return redirect()->to(login);
-    }
+         // csrf例外だった場合はログイン画面に飛ばす。Authenticate.phpの18行目もlogin→loginViewへ変更(2024/7/19)
+    if ($exception instanceof TokenMismatchException) {
+			return redirect()->route('loginView');
+		}
 
         return parent::render($request, $exception);
     }
