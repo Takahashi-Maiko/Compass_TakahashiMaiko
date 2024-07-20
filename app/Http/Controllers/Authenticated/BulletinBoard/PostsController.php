@@ -16,6 +16,8 @@ use Auth;
 class PostsController extends Controller
 {
     public function show(Request $request){
+        $user_id = Auth::id();   //2024/7/20追加
+        // dd($user_id);
         $posts = Post::with('user', 'postComments')->get();
         $categories = MainCategory::get();
         $like = new Like;
@@ -39,6 +41,8 @@ class PostsController extends Controller
     }
 
     public function postDetail($post_id){
+        $user_id = Auth::user()->id;   //2024/7/20追加
+        // dd($user_id);
         $post = Post::with('user', 'postComments')->findOrFail($post_id);
         return view('authenticated.bulletinboard.post_detail', compact('post'));
     }
@@ -49,14 +53,15 @@ class PostsController extends Controller
     }
 
     public function postCreate(PostFormRequest $request){
-        $post = Post::create([
-            'user_id' => Auth::id(),
-            'post_title' => $request->post_title,
-            'post' => $request->post_body
+        $post = Post::create([   //Postテーブルに入れる
+            'user_id' => Auth::id(),   //usersテーブルのカラムからログインしているユーザーのidを取得(ツイートしたユーザー)
+            'post_title' => $request->post_title,   //投稿のタイトル
+            'post' => $request->post_body   //投稿の内容
         ]);
         return redirect()->route('post.show');
     }
 
+    // ↓↓投稿の編集(2024/7/19)
     public function postEdit(Request $request){
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
@@ -65,6 +70,7 @@ class PostsController extends Controller
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
 
+    // ↓↓投稿の削除(2024/7/19)
     public function postDelete($id){
         Post::findOrFail($id)->delete();
         return redirect()->route('post.show');

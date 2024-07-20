@@ -7,10 +7,14 @@
         <div class="detail_inner_head">
           <div>
           </div>
+
+      <!-- ↓↓ログインユーザーのidと投稿($post)のuser_idが一致する場合は編集と削除の表示が出来る様に条件分岐する。 -->
+            @if ($user_id == $post->user_id)
           <div>
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
             <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
           </div>
+          @endif
         </div>
 
         <div class="contributor d-flex">
