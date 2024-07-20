@@ -12,6 +12,8 @@ use App\Models\Posts\Like;
 use App\Models\Users\User;
 use App\Http\Requests\BulletinBoard\PostFormRequest;
 use Auth;
+// Validatorクラスを使用するため
+use Illuminate\Support\Facades\Validator;
 
 class PostsController extends Controller
 {
@@ -44,7 +46,7 @@ class PostsController extends Controller
         $user_id = Auth::user()->id;   //2024/7/20追加
         // dd($user_id);
         $post = Post::with('user', 'postComments')->findOrFail($post_id);
-        return view('authenticated.bulletinboard.post_detail', compact('post'));
+        return view('authenticated.bulletinboard.post_detail', compact('post','user_id')); //compactの中身は44と46行目で定義した変数の$を取ったものを記述する。
     }
 
     public function postInput(){
@@ -63,6 +65,49 @@ class PostsController extends Controller
 
     // ↓↓投稿の編集(2024/7/19)
     public function postEdit(Request $request){
+        $data = $request->all();
+        // $validator = $request->validate([
+        //     'post_title' => 'min:4|string|max:100',    //maxを50→100へ変更
+        //     'post_body' => 'min:10|string|max:1000',   //maxを500→1000へ変更
+        // ]);
+
+
+        // ↓↓バリデーションの実施・ルールの設定
+        $validation_rules = [
+            'post_title' => ['required', 'string','min:4','max:100'],
+            'post_body' => ['required', 'string','min:10','max:1000'],
+        ];
+
+        // ↓↓バリデーションメッセージのカスタマイズ
+        $validation_message = [
+                'required' => ':attributeは必須です。',
+                'post_title.string' => ':attributeが不正な値です。',
+                'post_body.string' => ':attributeが不正な値です。',
+                'post_title.min' => ':attributeは4文字以上で入力して下さい。',
+                'post_title.max' => ':attributeは100文字以内で入力して下さい。',
+                'post_body.min' => ':attributeは10文字以上で入力して下さい。',
+                'post_body.max' => ':attributeは1000文字以内で入力して下さい。',
+            ];
+
+            // ↓↓各リクエストの名称 >> エラーメッセージの:attributeに入る文字。
+            $validation_attribute = [
+                'post_title' => 'タイトル',
+                'post_body' => '投稿内容',
+            ];
+
+        $validator = Validator::make($data, $validation_rules, $validation_message);
+
+
+        if ($validator->fails()) {
+            return redirect()->route('post.detail',['id' =>$request->post_id])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        // バリデーション済みデータの取得
+        $validated = $validator->validated();
+
+
         Post::where('id', $request->post_id)->update([
             'post_title' => $request->post_title,
             'post' => $request->post_body,
@@ -75,6 +120,8 @@ class PostsController extends Controller
         Post::findOrFail($id)->delete();
         return redirect()->route('post.show');
     }
+
+
     public function mainCategoryCreate(Request $request){
         MainCategory::create(['main_category' => $request->main_category_name]);
         return redirect()->route('post.input');

@@ -160,6 +160,8 @@ return [
             'role' => '権限',
             'password' => 'パスワード',
             'password_confirmation' => 'パスワード確認',
+            'post_title' => 'タイトル',
+            'post_body' => '投稿内容',
 
     ],
 

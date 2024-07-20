@@ -8,11 +8,26 @@
           <div>
           </div>
 
+        <!-- ↓↓バリデーションのif文でエラーが無い場合には表示しないように設定。 -->
+          @if($errors->first('post'))
+          @endif
+
+          <!-- ↓↓投稿の編集の際のバリデーションエラーの表示 -->
+          @if ($errors->any())
+              <div class="alert alert-danger">
+                  <ul>
+                      @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                      @endforeach
+                  </ul>
+              </div>
+          @endif
+
       <!-- ↓↓ログインユーザーのidと投稿($post)のuser_idが一致する場合は編集と削除の表示が出来る様に条件分岐する。 -->
             @if ($user_id == $post->user_id)
           <div>
             <span class="edit-modal-open" post_title="{{ $post->post_title }}" post_body="{{ $post->post }}" post_id="{{ $post->id }}">編集</span>
-            <a href="{{ route('post.delete', ['id' => $post->id]) }}">削除</a>
+            <a href="{{ route('post.delete', ['id' => $post->id]) }}" onclick="return confirm('この投稿を削除します。よろしいでしょうか？')">削除</a>
           </div>
           @endif
         </div>
