@@ -66,11 +66,6 @@ class PostsController extends Controller
     // ↓↓投稿の編集(2024/7/19)
     public function postEdit(Request $request){
         $data = $request->all();
-        // $validator = $request->validate([
-        //     'post_title' => 'min:4|string|max:100',    //maxを50→100へ変更
-        //     'post_body' => 'min:10|string|max:1000',   //maxを500→1000へ変更
-        // ]);
-
 
         // ↓↓バリデーションの実施・ルールの設定
         $validation_rules = [
@@ -127,7 +122,43 @@ class PostsController extends Controller
         return redirect()->route('post.input');
     }
 
+    // ↓↓コメント機能・バリデーション作成(2024/7/21)
     public function commentCreate(Request $request){
+
+        // $validator = $request->validate([   //バリデーションの設定：入力必須・1～150文字以内
+        //     'comment' => ['required','string','max:250'],   //入力必須・文字であること・150文字以内   newPostはname属性
+        // ]);
+
+        $data = $request->all();
+
+        // ↓↓バリデーションの実施・ルールの設定
+        $validation_rules = [
+            'comment' => ['required', 'string','max:250'],
+        ];
+
+        // ↓↓バリデーションメッセージのカスタマイズ
+        $validation_message = [
+                'required' => ':attributeは必須です。',
+                'comment.string' => ':attributeが不正な値です。',
+                'comment.max' => ':attributeは250文字以内で入力して下さい。',
+            ];
+
+            // ↓↓各リクエストの名称 >> エラーメッセージの:attributeに入る文字。
+            $validation_attribute = [
+                'comment' => 'コメント',
+            ];
+
+        $validator = Validator::make($data, $validation_rules, $validation_message);
+
+        if ($validator->fails()) {
+            return redirect()->route('post.detail',['id' =>$request->post_id])
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        // バリデーション済みデータの取得
+        $validated = $validator->validated();
+
         PostComment::create([
             'post_id' => $request->post_id,
             'user_id' => Auth::id(),

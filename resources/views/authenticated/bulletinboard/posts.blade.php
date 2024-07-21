@@ -10,8 +10,9 @@
       <p><a href="{{ route('post.detail', ['id' => $post->id]) }}">{{ $post->post_title }}</a></p>
       <div class="post_bottom_area d-flex">
         <div class="d-flex post_status">
+          <!-- ↓↓コメント数の表示(2024/7/21) -->
           <div class="mr-5">
-            <i class="fa fa-comment"></i><span class=""></span>
+            <i class="fa fa-comment"></i><span class="comments_counts{{ $post->id }} ">{{ $post->postComments()->count() }}</span>
           </div>
           <!-- ↓↓いいね数の表示(2024/720) -->
           <div>

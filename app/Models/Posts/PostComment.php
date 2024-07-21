@@ -17,8 +17,15 @@ class PostComment extends Model
         'comment',
     ];
 
+    // ↓↓Post.phpとの1対多のリレーション(2024/7/21)
     public function post(){
         return $this->belongsTo('App\Models\Posts\Post');
+    }
+
+    // ↓↓User.phpとの1対多のリレーション(2024/7/21)
+    public function user()
+    {
+        return $this->belongsTo('App\Models\Users\User');
     }
 
     public function commentUser($user_id){
