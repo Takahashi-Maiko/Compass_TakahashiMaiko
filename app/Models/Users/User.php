@@ -54,6 +54,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // ↓↓Like.phpとの1対多のリレーション(2024/7/21)
+    public function Like(){
+        return $this->hasMany('App\Models\Posts\Post');
+    }
+
+    // ↓↓Post.phpとの1対多のリレーション
     public function posts(){
         return $this->hasMany('App\Models\Posts\Post');
     }
@@ -83,6 +89,7 @@ class User extends Authenticatable
         return Like::where('like_user_id', Auth::id())->where('like_post_id', $post_id)->first(['likes.id']);
     }
 
+    // ↓↓いいねしている人のID
     public function likePostId(){
         return Like::where('like_user_id', Auth::id());
     }

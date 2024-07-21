@@ -13,6 +13,14 @@ class Like extends Model
         'like_post_id'
     ];
 
+
+    // ↓↓User.phpとの1対多のリレーション(2024/7/21)
+    public function user(){
+        return $this->belongsTo('App\Models\Users\User');
+    }
+
+
+    // ↓↓いいねの数の表示(2024/7/20)
     public function likeCounts($post_id){
         return $this->where('like_post_id', $post_id)->get()->count();
     }

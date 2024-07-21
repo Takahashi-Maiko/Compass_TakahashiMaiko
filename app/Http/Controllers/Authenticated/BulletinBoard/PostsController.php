@@ -136,6 +136,7 @@ class PostsController extends Controller
         return redirect()->route('post.detail', ['id' => $request->post_id]);
     }
 
+    // ↓↓いいねした投稿の表示
     public function myBulletinBoard(){
         $posts = Auth::user()->posts()->get();
         $like = new Like;
@@ -149,6 +150,7 @@ class PostsController extends Controller
         return view('authenticated.bulletinboard.post_like', compact('posts', 'like'));
     }
 
+    // ↓↓いいねする
     public function postLike(Request $request){
         $user_id = Auth::id();
         $post_id = $request->post_id;
@@ -162,6 +164,7 @@ class PostsController extends Controller
         return response()->json();
     }
 
+    // ↓↓いいね外す
     public function postUnLike(Request $request){
         $user_id = Auth::id();
         $post_id = $request->post_id;
