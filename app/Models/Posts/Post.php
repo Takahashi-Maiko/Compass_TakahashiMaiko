@@ -23,8 +23,14 @@ class Post extends Model
         return $this->belongsTo('App\Models\Users\User');
     }
 
+    // ↓↓subCategories.phpとの多対多のリレーション(2024/7/21)
     public function subCategories(){
-        // リレーションの定義
+        return $this->belongsToMany('App\Models\Categories\Sub_Category', 'subject_users', 'post_id', 'sub_category_id');
+    //多対多のリレーションなのでbelongsToManyをメソッドとして使用。
+    //第一引数＝使用する相手のモデル
+    //第二引数＝使用するテーブル名
+    //第三引数＝リレーションを定義しているモデルの外部キー名
+    //第四引数＝結合するモデルの外部キー名
     }
 
     // ↓↓postComments.phpとの1対多のリレーション(2024/7/21)

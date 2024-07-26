@@ -116,9 +116,15 @@ class PostsController extends Controller
         return redirect()->route('post.show');
     }
 
-
+    // ↓↓メインカテゴリー追加機能
     public function mainCategoryCreate(Request $request){
         MainCategory::create(['main_category' => $request->main_category_name]);
+        return redirect()->route('post.input');
+    }
+
+    // ↓↓サブカテゴリー追加機能(2024/7/25)
+    public function subCategoryCreate(Request $request){
+        SubCategory::create(['sub_category' => $request->sub_category_name]);
         return redirect()->route('post.input');
     }
 

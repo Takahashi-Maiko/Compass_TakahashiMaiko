@@ -41,15 +41,15 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/bulletin_board/input', 'PostsController@postInput')->name('post.input');
             Route::get('/bulletin_board/like', 'PostsController@likeBulletinBoard')->name('like.bulletin.board');   //いいねした投稿画面
             Route::get('/bulletin_board/my_post', 'PostsController@myBulletinBoard')->name('my.bulletin.board');   //自分の投稿画面
-            Route::post('/bulletin_board/create', 'PostsController@postCreate')->name('post.create');
-            Route::post('/create/main_category', 'PostsController@mainCategoryCreate')->name('main.category.create');
-            Route::post('/create/sub_category', 'PostsController@subCategoryCreate')->name('sub.category.create');
+            Route::post('/bulletin_board/create', 'PostsController@postCreate')->name('post.create');   //新規投稿
+            Route::post('/create/main_category', 'PostsController@mainCategoryCreate')->name('main.category.create');   //メインカテゴリー作成
+            Route::post('/create/sub_category', 'PostsController@subCategoryCreate')->name('sub.category.create');   //サブカテゴリー作成
             Route::get('/bulletin_board/post/{id}', 'PostsController@postDetail')->name('post.detail');   //投稿の内容を表示する画面
-            Route::post('/bulletin_board/edit', 'PostsController@postEdit')->name('post.edit');
-            Route::get('/bulletin_board/delete/{id}', 'PostsController@postDelete')->name('post.delete');
-            Route::post('/comment/create', 'PostsController@commentCreate')->name('comment.create');
-            Route::post('/like/post/{id}', 'PostsController@postLike')->name('post.like');
-            Route::post('/unlike/post/{id}', 'PostsController@postUnLike')->name('post.unlike');
+            Route::post('/bulletin_board/edit', 'PostsController@postEdit')->name('post.edit');   //投稿編集
+            Route::get('/bulletin_board/delete/{id}', 'PostsController@postDelete')->name('post.delete');   //投稿の削除
+            Route::post('/comment/create', 'PostsController@commentCreate')->name('comment.create');   //コメント
+            Route::post('/like/post/{id}', 'PostsController@postLike')->name('post.like');   //いいね
+            Route::post('/unlike/post/{id}', 'PostsController@postUnLike')->name('post.unlike');   //いいね外す
         });
         Route::namespace('Users')->group(function () {
             Route::get('/show/users', 'UsersController@showUsers')->name('user.show');
