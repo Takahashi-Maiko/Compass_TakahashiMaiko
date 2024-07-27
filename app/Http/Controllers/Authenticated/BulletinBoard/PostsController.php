@@ -116,16 +116,24 @@ class PostsController extends Controller
         return redirect()->route('post.show');
     }
 
-    // ↓↓メインカテゴリー追加機能
+    // ↓↓メインカテゴリー追加機能・バリデーションつける
     public function mainCategoryCreate(Request $request){
         MainCategory::create(['main_category' => $request->main_category_name]);
         return redirect()->route('post.input');
     }
 
-    // ↓↓サブカテゴリー追加機能(2024/7/25)
+    // ↓↓サブカテゴリー追加機能・バリデーションつける(2024/7/25)
     public function subCategoryCreate(Request $request){
-        SubCategory::create(['sub_category' => $request->sub_category_name]);
-        return redirect()->route('post.input');
+        // $main_category_id = MainCategory::id()->get();   //エラー発生(2024/7/25)
+        SubCategory::create([
+            'sub_category' => $request->sub_category_name,
+            'main_category_id' => $request->main_category_id,
+        ]);
+        dd(main_category_id);
+        // メインカテゴリーカラムも追加する
+
+        // $main_category_id = MainCategory::find(id);
+        return redirect()->route('post.input' ,['id' => $request->main_category_id]);
     }
 
     // ↓↓コメント機能・バリデーション作成(2024/7/21)

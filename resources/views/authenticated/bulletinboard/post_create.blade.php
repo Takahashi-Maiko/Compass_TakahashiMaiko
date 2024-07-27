@@ -9,7 +9,10 @@
         @foreach($main_categories as $main_category)
         <optgroup label="{{ $main_category->main_category }}"></optgroup>
         <!-- サブカテゴリー表示 -->
+          <option label="{{ $main_category->sub_category }}" value=""></option>
         </optgroup>
+        <!-- ↑↑<optgroup>タグに対応しているブラウザでは、セレクトボックスの選択肢を階層化することができる。
+          グループのラベルはlabel属性で指定した文字が表示される。 -->
         @endforeach
       </select>
     </div>
@@ -40,9 +43,16 @@
         <input type="text" class="w-100" name="main_category_name" form="mainCategoryRequest">
         <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="mainCategoryRequest">
       </div>
-      <!-- サブカテゴリー追加 -->
+      <!-- サブカテゴリー追加(2024/7/25) -->
       <div class="">
         <p class="m-0">サブカテゴリー</p>
+        <!-- セレクトが入る（メインカテゴリーを選択する為） -->
+        <select name="sub_category_box" class="w-100" id="">
+          <option label="" value="" selected>---</option>
+          @foreach($main_categories as $main_category)
+          <option label="{{ $main_category->main_category }}" value=""></option>
+          @endforeach
+        </select>
         <input type="text" class="w-100" name="sub_category_name" form="subCategoryRequest">
         <input type="submit" value="追加" class="w-100 btn btn-primary p-0" form="subCategoryRequest">
       </div>
