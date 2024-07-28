@@ -24,8 +24,8 @@ class Post extends Model
     }
 
     // ↓↓subCategories.phpとの多対多のリレーション(2024/7/21)
-    public function subCategories(){
-        return $this->belongsToMany('App\Models\Categories\Sub_Category', 'subject_users', 'post_id', 'sub_category_id');
+    public function subCategory(){
+        return $this->belongsToMany('App\Models\Categories\SubCategory', 'post_sub_categories', 'post_id', 'sub_category_id');
     //多対多のリレーションなのでbelongsToManyをメソッドとして使用。
     //第一引数＝使用する相手のモデル
     //第二引数＝使用するテーブル名

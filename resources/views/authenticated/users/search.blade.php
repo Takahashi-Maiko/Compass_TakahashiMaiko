@@ -45,7 +45,12 @@
       </div>
       <div>
         @if($user->role == 4)
+        <!-- ↓↓ユーザー検索画面の選択科目を表示させる(2024/7/28) -->
         <span>選択科目 :</span>
+        @foreach($user->subjects as $subject)
+        <span>{{ $subject->subject}}</span>
+         @endforeach
+
         @endif
       </div>
     </div>
@@ -89,8 +94,15 @@
               <option value="4" class="">生徒</option>
             </select>
           </div>
+          <!-- ↓↓選択科目のチェック欄を表示させる(2024/7/28) -->
           <div class="selected_engineer">
             <label>選択科目</label>
+            @foreach($subject_lists as $subject_list)
+            <div>
+            <label>{{ $subject_list->subject }}</label>
+            <input type="checkbox" name="subjects[]" value="{{ $subject_list->id }}">
+            </div>
+            @endforeach
           </div>
         </div>
       </div>

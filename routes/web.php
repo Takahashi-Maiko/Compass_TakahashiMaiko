@@ -52,9 +52,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/unlike/post/{id}', 'PostsController@postUnLike')->name('post.unlike');   //いいね外す
         });
         Route::namespace('Users')->group(function () {
-            Route::get('/show/users', 'UsersController@showUsers')->name('user.show');
-            Route::get('/user/profile/{id}', 'UsersController@userProfile')->name('user.profile');
-            Route::post('/user/profile/edit', 'UsersController@userEdit')->name('user.edit');
+            Route::get('/show/users', 'UsersController@showUsers')->name('user.show');   //ユーザー検索画面
+            Route::get('/user/profile/{id}', 'UsersController@userProfile')->name('user.profile');  //ユーザープロフィール画面
+            Route::post('/user/profile/edit', 'UsersController@userEdit')->name('user.edit');   //プロフィール編集画面
         });
     });
 });

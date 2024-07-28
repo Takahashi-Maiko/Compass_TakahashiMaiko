@@ -163,6 +163,9 @@ return [
             'post_title' => 'タイトル',
             'post_body' => '投稿内容',
             'comment' => 'コメント',
+            'main_category_name' => 'メインカテゴリー',
+            'main_category_id' => 'メインカテゴリー',
+            'sub_category_name' => 'サブカテゴリー',
     ],
 
 ];

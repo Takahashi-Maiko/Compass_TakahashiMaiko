@@ -55,11 +55,15 @@ class PostsController extends Controller
     }
 
     public function postCreate(PostFormRequest $request){
+        // dd($request);
         $post = Post::create([   //Postテーブルに入れる
             'user_id' => Auth::id(),   //usersテーブルのカラムからログインしているユーザーのidを取得(ツイートしたユーザー)
             'post_title' => $request->post_title,   //投稿のタイトル
             'post' => $request->post_body   //投稿の内容
         ]);
+
+        $post->SubCategory()->attach($request->sub_category_id);   //attachメソッドは中間テーブル(post_sub_categories)に登録するために必要な記述
+
         return redirect()->route('post.show');
     }
 
@@ -118,22 +122,91 @@ class PostsController extends Controller
 
     // ↓↓メインカテゴリー追加機能・バリデーションつける
     public function mainCategoryCreate(Request $request){
+        $data = $request->all();
+
+        // ・必須項目
+        // ・100文字以内
+        // ・文字列型
+        // ・同じ名前のメインカテゴリーは登録できない
+        // ↓↓バリデーションの実施・ルールの設定
+        $validation_rules = [
+            'main_category_name' => ['required', 'string','max:100','unique:main_categories,main_category_name'],
+        ];
+
+        // ↓↓バリデーションメッセージのカスタマイズ
+        $validation_message = [
+                'required' => ':attributeは必須です。',
+                'main_category_name.string' => ':attributeが不正な値です。',
+                'main_category_name.max' => ':attributeは100文字以内で入力して下さい。',
+                'main_category_name.unique' => '登録済みのメインカテゴリーは追加出来ません。',
+            ];
+
+            // ↓↓各リクエストの名称 >> エラーメッセージの:attributeに入る文字。
+            $validation_attribute = [
+                'main_category_name' => 'メインカテゴリー',
+            ];
+
+        $validator = Validator::make($data, $validation_rules, $validation_message);
+
+
+        if ($validator->fails()) {
+            return redirect()->route('post.input')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        // バリデーション済みデータの取得
+        $validated = $validator->validated();
+
+
         MainCategory::create(['main_category' => $request->main_category_name]);
         return redirect()->route('post.input');
     }
 
     // ↓↓サブカテゴリー追加機能・バリデーションつける(2024/7/25)
     public function subCategoryCreate(Request $request){
-        // $main_category_id = MainCategory::id()->get();   //エラー発生(2024/7/25)
+        $data = $request->all();
+
+        $validation_rules = [
+            'main_category_id' => ['required','accepted'],   //acceptedはチェック済みかどうか
+            'sub_category_name' => ['required', 'string','max:100','unique:sub_categories,sub_category'],
+        ];
+
+        // ↓↓バリデーションメッセージのカスタマイズ
+        $validation_message = [
+                'required' => ':attributeは必須です。',
+                'sub_category_name.string' => ':attributeが不正な値です。',
+                'sub_category_name.max' => ':attributeは100文字以内で入力して下さい。',
+                'sub_category_name.unique' => '登録済みのサブカテゴリーは追加出来ません。',
+            ];
+
+            // ↓↓各リクエストの名称 >> エラーメッセージの:attributeに入る文字。
+            $validation_attribute = [
+                'sub_category_name' => 'サブカテゴリー',
+                'main_category_is' => 'メインカテゴリー',
+            ];
+
+        $validator = Validator::make($data, $validation_rules, $validation_message);
+
+
+        if ($validator->fails()) {
+            return redirect()->route('post.input')
+                        ->withErrors($validator)
+                        ->withInput();
+        }
+
+        // バリデーション済みデータの取得
+        $validated = $validator->validated();
+
+
         SubCategory::create([
             'sub_category' => $request->sub_category_name,
             'main_category_id' => $request->main_category_id,
         ]);
-        dd(main_category_id);
         // メインカテゴリーカラムも追加する
 
         // $main_category_id = MainCategory::find(id);
-        return redirect()->route('post.input' ,['id' => $request->main_category_id]);
+        return redirect()->route('post.input' ,['id' => $request->main_category_id,]);
     }
 
     // ↓↓コメント機能・バリデーション作成(2024/7/21)
@@ -165,7 +238,7 @@ class PostsController extends Controller
         $validator = Validator::make($data, $validation_rules, $validation_message);
 
         if ($validator->fails()) {
-            return redirect()->route('post.detail',['id' =>$request->post_id])
+            return redirect()->route('post.input',['id' =>$request->post_id])
                         ->withErrors($validator)
                         ->withInput();
         }

@@ -32,7 +32,12 @@
           @endif
         </div>
 
+        <!-- ↓↓投稿詳細画面 -->
         <div class="contributor d-flex">
+          @foreach($post->subCategory as $sub)
+          <span>{{ $sub->sub_category }}</span>
+          @endforeach
+          <br>
           <p>
             <span>{{ $post->user->over_name }}</span>
             <span>{{ $post->user->under_name }}</span>
