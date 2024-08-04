@@ -168,7 +168,7 @@ class PostsController extends Controller
         $data = $request->all();
 
         $validation_rules = [
-            'main_category_id' => ['required','accepted'],   //acceptedはチェック済みかどうか
+            'main_category_id' => ['required','present'],   //'present'は項目が存在するかどうか
             'sub_category_name' => ['required', 'string','max:100','unique:sub_categories,sub_category'],
         ];
 
