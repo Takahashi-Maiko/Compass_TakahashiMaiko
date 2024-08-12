@@ -6,6 +6,8 @@ use App\Models\Users\User;
 class SelectIds implements DisplayUsers{
 
   // 改修課題：選択科目の検索機能
+  // result=結果・成果
+  //複数選択した検索結果の為のファイル？？
   public function resultUsers($keyword, $category, $updown, $gender, $role, $subjects){
     if(is_null($gender)){
       $gender = ['1', '2', '3'];

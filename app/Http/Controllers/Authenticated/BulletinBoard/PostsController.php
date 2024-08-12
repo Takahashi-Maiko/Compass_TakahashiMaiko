@@ -21,7 +21,7 @@ class PostsController extends Controller
         $user_id = Auth::id();   //2024/7/20追加
         // dd($user_id);
         $posts = Post::with('user', 'postComments')->get();
-        $categories = MainCategory::get();
+        $categories = MainCategory::with('subCategory')->get();
         $like = new Like;
         $post_comment = new Post;
         if(!empty($request->keyword)){
@@ -168,7 +168,8 @@ class PostsController extends Controller
         $data = $request->all();
 
         $validation_rules = [
-            'main_category_id' => ['required','present'],   //'present'は項目が存在するかどうか
+            'main_category_id' => ['required','exists:main_categories,id'],
+             //exists=データベース内のname属性と同名のカラム内に入力値が存在するかをチェックする。name属性自体をカラム名にしないといけないので注意。
             'sub_category_name' => ['required', 'string','max:100','unique:sub_categories,sub_category'],
         ];
 
@@ -183,7 +184,7 @@ class PostsController extends Controller
             // ↓↓各リクエストの名称 >> エラーメッセージの:attributeに入る文字。
             $validation_attribute = [
                 'sub_category_name' => 'サブカテゴリー',
-                'main_category_is' => 'メインカテゴリー',
+                'main_category_id' => 'メインカテゴリー',
             ];
 
         $validator = Validator::make($data, $validation_rules, $validation_message);

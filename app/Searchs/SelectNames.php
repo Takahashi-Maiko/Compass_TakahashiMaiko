@@ -5,6 +5,8 @@ use App\Models\Users\User;
 
 class SelectNames implements DisplayUsers{
 
+  //改修課題：ユーザー検索
+  // result=結果・成果
   public function resultUsers($keyword, $category, $updown, $gender, $role, $subjects){
     if(empty($gender)){
       $gender = ['1', '2', '3'];
@@ -18,8 +20,8 @@ class SelectNames implements DisplayUsers{
     }
     $users = User::with('subjects')
     ->where(function($q) use ($keyword){
-      $q->where('over_name', 'like', '%'.$keyword.'%')
-      ->orWhere('under_name', 'like', '%'.$keyword.'%')
+      $q->where('over_name', 'like', '%'.$keyword.'%')   //WhereでLIKEを利用しあいまい検索
+      ->orWhere('under_name', 'like', '%'.$keyword.'%')   //orWhereを用いて氏・名・ウジ・メイのいずれかにマッチする検索を可能にしている。
       ->orWhere('over_name_kana', 'like', '%'.$keyword.'%')
       ->orWhere('under_name_kana', 'like', '%'.$keyword.'%');
     })->whereIn('sex', $gender)

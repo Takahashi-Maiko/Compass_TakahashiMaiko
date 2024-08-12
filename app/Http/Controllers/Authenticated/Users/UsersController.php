@@ -40,4 +40,28 @@ class UsersController extends Controller
         $user->subjects()->sync($request->subjects);   //syncメソッドは中間テーブル(subject_users)に登録するために必要な記述
         return redirect()->route('user.profile', ['id' => $request->user_id]);
     }
+
+    // ↓↓ユーザー検索機能(2024/8/11)
+    public function resultUsers(Request $request){
+
+        $keyword = $request->input('keyword');   //'keyword'にはblade.phpのname属性を記述。(name属性で指定したキーが連想配列のキーの役割を持っている)
+          if (isset($keyword)) {   //検索ワードが入力されていたらの処理
+            $users = User::where('keyword', 'category', 'updown', 'gender', 'role', 'subjects','LIKE',"%$keyword%")->paginate(20);
+            //where()でUserモデルを利用してテーブルのカラムを取得
+        }else{   //ユーザー名が入力されていない場合の処理
+        $users = User::get();
+            //ユーザー名が入力されていない場合は全件表示させることにする。
+
+                            //viewファイルに変数として渡す
+        return view('user.show')->with([
+            'keyword'=>$keyword,   //検索キーワード
+            'category'=>$category,
+            'updown'=>$updown,
+            'gender'=>$gender,
+            'role'=>$role,
+            'subject'=>$subject,   //選択科目
+        ]);
+
+        }
+    }
 }
