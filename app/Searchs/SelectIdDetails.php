@@ -34,7 +34,7 @@ class SelectIdDetails implements DisplayUsers{
       ->whereIn('role', $role);
     })
     ->whereHas('subjects', function($q) use ($subjects){   //whereHas=リレーション先のテーブルの条件で検索したい為使用
-      $q->where('subjects.id', $subjects);
+      $q->whereIn('subjects.id', $subjects);    //where->whereInに変更(2024/8/12)
     })
     ->orderBy('id', $updown)->get();   //orderByメソッドで記事の並び順を作成日時の昇順に設定
     return $users;

@@ -7,7 +7,7 @@ class SearchResultFactories{
 
   // 改修課題：選択科目の検索機能
   // initialize=初期化する
-  // 検索結果を反映させる為ファイル
+  // 検索結果を反映させる為ファイル(userControllerへ送る)
   public function initializeUsers($keyword, $category, $updown, $gender, $role, $subjects){
     if($category == 'name'){
       if(is_null($subjects)){
