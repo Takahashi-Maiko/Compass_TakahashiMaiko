@@ -8,7 +8,7 @@ class SelectIdDetails implements DisplayUsers{
   // 改修課題：選択科目の検索機能
   // result=結果・成果
   // Details=詳細
-  //複数選択検索の為のファイル？？
+  //　複数選択検索の為のファイル？？
   public function resultUsers($keyword, $category, $updown, $gender, $role, $subjects){
     if(is_null($keyword)){
       $keyword = User::get('id')->toArray();   //Userテーブルからidを取得
@@ -17,12 +17,12 @@ class SelectIdDetails implements DisplayUsers{
     }else{
       $keyword = array($keyword);
     }
-    if(is_null($gender)){
+    if(is_null($gender)){   //性別
       $gender = ['1', '2', '3'];
     }else{
       $gender = array($gender);
     }
-    if(is_null($role)){
+    if(is_null($role)){   //権限
       $role = ['1', '2', '3', '4'];
     }else{
       $role = array($role);

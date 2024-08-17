@@ -27,6 +27,7 @@
     </div>
     @endforeach
   </div>
+  <!-- ↓↓投稿検索エリア -->
   <div class="other_area border w-25">
     <div class="border m-4">
       <div class=""><a href="{{ route('post.input') }}">投稿</a></div>

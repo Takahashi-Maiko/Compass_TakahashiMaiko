@@ -17,36 +17,41 @@ use Illuminate\Support\Facades\Validator;
 
 class PostsController extends Controller
 {
+    // ↓↓投稿表示/検索機能 サブカテゴリーでの検索機能実装する
     public function show(Request $request){
         $user_id = Auth::id();   //2024/7/20追加
         // dd($user_id);
-        $posts = Post::with('user', 'postComments')->get();
-        $categories = MainCategory::with('subCategory')->get();
-        $like = new Like;
-        $post_comment = new Post;
-        if(!empty($request->keyword)){
-            $posts = Post::with('user', 'postComments')
+        $posts = Post::with('user', 'postComments')->get();   //postテーブルからユーザーとコメント取得
+        $categories = MainCategory::with('subCategory')->get();   //メインカテゴリーテーブルととサブカテゴリーテーブルの取得
+        $like = new Like;   //いいね
+        $post_comment = new Post;   //コメント
+        if(!empty($request->keyword)){   //キーワードの取得
+            $posts = Post::with('user', 'postComments')   //postテーブルとusersテーブルとpost commentsテーブルの取得。クラスを指定したのちwhere句の記載
             ->where('post_title', 'like', '%'.$request->keyword.'%')
+             //第一引数=該当するカラム名 第二引数=あいまい検索の為のlike 第三引数=どの一致七日の条件(今回はキーワード)   前後に％をつけ部分一致判定にする。
             ->orWhere('post', 'like', '%'.$request->keyword.'%')->get();
-        }else if($request->category_word){
-            $sub_category = $request->category_word;
+             //第一引数=該当するカラム名 第二引数=あいまい検索の為のlike 第三引数=どの一致七日の条件(今回はキーワード)   前後に％をつけ部分一致判定にする。
+        }else if($request->category_word){   //カテゴリー
+            // $sub_category = $request->category_word   //サブカテゴリーでの検索
+            // ↓↓サブカテゴリー検索機能(完全一致)追加 2024/8/17
+            $sub_category = Sub_categories::where('sub_category', '=', '$request->keyword')->get();
             $posts = Post::with('user', 'postComments')->get();
-        }else if($request->like_posts){
+        }else if($request->like_posts){   //いいねした投稿
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
             ->whereIn('id', $likes)->get();
-        }else if($request->my_posts){
+        }else if($request->my_posts){   //自分の投稿
             $posts = Post::with('user', 'postComments')
             ->where('user_id', Auth::id())->get();
         }
-        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
+        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment','sub_category'));
     }
 
     public function postDetail($post_id){
         $user_id = Auth::user()->id;   //2024/7/20追加
         // dd($user_id);
         $post = Post::with('user', 'postComments')->findOrFail($post_id);
-        return view('authenticated.bulletinboard.post_detail', compact('post','user_id')); //compactの中身は44と46行目で定義した変数の$を取ったものを記述する。
+        return view('authenticated.bulletinboard.post_detail', compact('post','user_id')); //compactの中身は49と51行目で定義した変数の$を取ったものを記述する。
     }
 
     public function postInput(){
