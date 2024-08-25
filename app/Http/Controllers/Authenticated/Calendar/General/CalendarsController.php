@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Authenticated\Calendar\General;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Calendars\General\CalendarView;
+use App\Calendars\General\CalendarView;   //CalendarViewクラス(カレンダーを出力するためのクラス。重要!!! 2024/8/25)
 use App\Models\Calendars\ReserveSettings;
 use App\Models\Calendars\Calendar;
 use App\Models\USers\User;
@@ -17,7 +17,10 @@ class CalendarsController extends Controller
         $calendar = new CalendarView(time());
         return view('authenticated.calendar.general.calendar', compact('calendar'));
     }
+    // ↑↑time()を使用し、現在時刻を渡して今月のカレンダーを用意する。
+    //  return view～でViewに作成したCalendarViewオブジェクトを渡す。
 
+    // Reserve=予約
     public function reserve(Request $request){
         DB::beginTransaction();
         try{

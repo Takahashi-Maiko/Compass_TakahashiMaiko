@@ -3,6 +3,7 @@ namespace App\Calendars\Admin;
 
 use Carbon\Carbon;
 
+// ↓↓カレンダーの週を出力するためのCalendarWeekクラス(2024/8/25)
 class CalendarWeek{
   protected $carbon;
   protected $index = 0;

@@ -26,6 +26,7 @@ class CalendarsController extends Controller
     }
 
     // ↓↓スクール枠登録(2024/7/15)
+    // Reserve=予約
     public function reserveSettings(){
         $calendar = new CalendarSettingView(time());
         return view('authenticated.calendar.admin.reserve_setting', compact('calendar'));

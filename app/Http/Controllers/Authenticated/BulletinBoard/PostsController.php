@@ -29,22 +29,31 @@ class PostsController extends Controller
             $posts = Post::with('user', 'postComments')   //postテーブルとusersテーブルとpost commentsテーブルの取得。クラスを指定したのちwhere句の記載
             ->where('post_title', 'like', '%'.$request->keyword.'%')
              //第一引数=該当するカラム名 第二引数=あいまい検索の為のlike 第三引数=どの一致七日の条件(今回はキーワード)   前後に％をつけ部分一致判定にする。
-            ->orWhere('post', 'like', '%'.$request->keyword.'%')->get();
+            ->orWhere('post', 'like', '%'.$request->keyword.'%')
              //第一引数=該当するカラム名 第二引数=あいまい検索の為のlike 第三引数=どの一致七日の条件(今回はキーワード)   前後に％をつけ部分一致判定にする。
-        }else if($request->category_word){   //カテゴリー
-            // $sub_category = $request->category_word   //サブカテゴリーでの検索
             // ↓↓サブカテゴリー検索機能(完全一致)追加 2024/8/17
-            $sub_category = Sub_categories::where('sub_category', '=', '$request->keyword')->get();
+            ->orwhereHas('subCategory', function($q) use ($request){   //'sub_category'はpostとのリレーションのメソッド名を使用
+            $q->where('sub_category', '=', $request->keyword);   //完全一致なのでwhereを使用
+            })->get();
+        }else if($request->category_word){   //カテゴリー
+            $sub_category = $request->category_word;   //サブカテゴリーでの検索
+            // $sub_category = SubCategory::where('sub_category', '=', '$request->category_word')->get();
             $posts = Post::with('user', 'postComments')->get();
-        }else if($request->like_posts){   //いいねした投稿
+        }else if($request->like_posts){   //いいねした投稿 like_postsはinputタグの中のname属性
             $likes = Auth::user()->likePostId()->get('like_post_id');
             $posts = Post::with('user', 'postComments')
             ->whereIn('id', $likes)->get();
-        }else if($request->my_posts){   //自分の投稿
+        }else if($request->my_posts){   //自分の投稿 my_postsはinputタグの中のname属性
             $posts = Post::with('user', 'postComments')
             ->where('user_id', Auth::id())->get();
+        // ↓↓サブカテゴリーに紐づいた投稿を表示させる 2024/8/18
+        }else if($request->sub_category_posts){   //サブカテゴリーに紐づいた投稿 sub_category_postsはinputタグの中のname属性
+            $posts = Post::with('user', 'postComments')
+            ->orwhereHas('subCategory', function($q) use ($request){   //'sub_category'はpostとのリレーションのメソッド名を使用
+            $q->where('sub_category', '=', $request->sub_category_posts);   //完全一致なのでwhereを使用
+            })->get();
         }
-        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment','sub_category'));
+        return view('authenticated.bulletinboard.posts', compact('posts', 'categories', 'like', 'post_comment'));
     }
 
     public function postDetail($post_id){

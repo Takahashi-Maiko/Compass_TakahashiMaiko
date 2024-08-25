@@ -4,6 +4,7 @@ namespace App\Calendars\Admin;
 use Carbon\Carbon;
 use App\Models\Calendars\ReserveSettings;
 
+// ↓↓カレンダーの日を出力するためのCalendarWeekDayクラス(2024/8/25)
 class CalendarWeekDay{
   protected $carbon;
 

@@ -39,9 +39,12 @@
       <input type="submit" name="my_posts" class="category_btn" value="自分の投稿" form="postSearchRequest">
       <ul>
         @foreach($categories as $category)
-        <li class="main_categories" category_id="{{ $category->id }}"><span>{{ $category->main_category }}<span></li>
+        <!-- <li class="main_categories" category_id="{{ $category->id }}"><span>{{ $category->main_category }}<span></li> -->
+        <li class="main_categories" category_id="{{ $category->id }}"><input type="submit" class="" value="{{ $category->main_category }}"></li>
           @foreach($category->subCategory as $sub_category)
-            <li class="sub_category" category_id="{{ $sub_category->id }}"><span>{{ $sub_category->sub_category }}<span></li>
+            <!-- <li class="sub_category" category_id="{{ $sub_category->id }}"><span>{{ $sub_category->sub_category }}<span></li> -->
+            <!-- ↓↓サブカテゴリーに紐づいた投稿を表示させるためinputタグ使用 2024/8/18 -->
+            <li class="sub_category" category_id="{{ $sub_category->id }}"><input type="submit" name="sub_category_posts" class="category_btn" value="{{ $sub_category->sub_category }}" form="postSearchRequest"></li>
           @endforeach
         @endforeach
       </ul>
