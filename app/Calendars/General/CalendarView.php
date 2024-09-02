@@ -15,6 +15,7 @@ class CalendarView{
     return $this->carbon->format('Y年n月');
   }
 
+  // ↓↓カレンダーを形成している記述
   function render(){
     $html = [];
     $html[] = '<div class="calendar text-center">';
@@ -41,13 +42,14 @@ class CalendarView{
         $toDay = $this->carbon->copy()->format("Y-m-d");
 
         if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
-          $html[] = '<td class="calendar-td">';
+          $html[] = '<td class="past-day">';
         }else{
           $html[] = '<td class="calendar-td '.$day->getClassName().'">';
         }
         $html[] = $day->render();
 
-        if(in_array($day->everyDay(), $day->authReserveDay())){
+        // ↓↓予約の機能
+        if(in_array($day->everyDay(), $day->authReserveDay())){   //ログインしているユーザーが予約していたら
           $reservePart = $day->authReserveDate($day->everyDay())->first()->setting_part;
           if($reservePart == 1){
             $reservePart = "リモ1部";
@@ -56,18 +58,22 @@ class CalendarView{
           }else if($reservePart == 3){
             $reservePart = "リモ3部";
           }
-          if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){
+          if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約している場合
             $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
-          }else{
+          }else{   //未来の場合かつ予約している場合
             $html[] = '<button type="submit" class="btn btn-danger p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }
-        }else{
-          $html[] = $day->selectPart($day->everyDay());
+        }else{   //ログインしているユーザーが予約していない場合
+          if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約していない場合
+          $html[] = '<p class="">受付終了</p>';   //過去日グレーアウト
+          }else{   //未来の場合かつ予約していない場合
+            $html[] = $day->selectPart($day->everyDay());
+          }
         }
         $html[] = $day->getDate();
-        $html[] = '</td>';
+        $html[] = '</p>';
       }
       $html[] = '</tr>';
     }

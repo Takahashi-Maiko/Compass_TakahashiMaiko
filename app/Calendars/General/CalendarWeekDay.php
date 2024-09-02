@@ -28,7 +28,7 @@ class CalendarWeekDay{
      return '<p class="day">' . $this->carbon->format("j"). '日</p>';
    }
 
-   function selectPart($ymd){
+   function selectPart($ymd){   //プルダウン
      $one_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '1')->first();
      $two_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
      $three_part_frame = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
