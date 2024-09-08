@@ -59,6 +59,7 @@ class CalendarView{
             $reservePart = "リモ3部";
           }
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約している場合
+            $html[] = '<p class="">受付終了</p>';   //過去日グレーアウト
             $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{   //未来の場合かつ予約している場合
@@ -68,12 +69,16 @@ class CalendarView{
         }else{   //ログインしているユーザーが予約していない場合
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約していない場合
           $html[] = '<p class="">受付終了</p>';   //過去日グレーアウト
+          $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{   //未来の場合かつ予約していない場合
             $html[] = $day->selectPart($day->everyDay());
           }
         }
         $html[] = $day->getDate();
         $html[] = '</p>';
+
+          //予約キャンセル機能の実装をしたい(2024/9/7)
+
       }
       $html[] = '</tr>';
     }
