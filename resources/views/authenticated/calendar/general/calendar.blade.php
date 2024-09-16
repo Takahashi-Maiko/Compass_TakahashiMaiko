@@ -28,8 +28,10 @@
     <form action="{{ route('deleteParts') }}" method="post">
       <div class="w-100">
         <div class="modal-inner-title w-50 m-auto">
-          <!-- <input type="text" name="post_title" placeholder="タイトル" class="w-100"> -->
-          <input type="hidden" name="getPart[]" value="" form="deleteParts">
+          <p>予約日:<span class="reserve_day" name="setting_reserve"></span></p>
+          <p>時間:<span class="reserve_day" name="reservePart"></span></p>
+          <p>上記の予約をキャンセルしてもよろしいですか？</p>
+          <!-- <input type="text" name="getPart" value="" form="deleteParts"> -->
           <!-- <input type="hidden" name="getPart[]" value="" form="deleteParts"> -->
         </div>
         <!-- <div class="modal-inner-body w-50 m-auto pt-3 pb-3">
@@ -37,7 +39,7 @@
         </div> -->
         <div class="w-50 m-auto delete-modal-btn d-flex">
           <a class="js-modal-close btn btn-danger d-inline-block" href="">閉じる</a>
-          <input type="hidden" class="delete-modal-hidden" name="" value="">
+          <input type="hidden" class="delete-modal-hidden" name="user_name" value="">
           <input type="submit" class="btn btn-primary d-block" value="キャンセル">
         </div>
       </div>

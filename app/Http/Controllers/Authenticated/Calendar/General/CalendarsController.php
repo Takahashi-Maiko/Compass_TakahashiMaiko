@@ -22,7 +22,7 @@ class CalendarsController extends Controller
 
     // Reserve=予約
     public function reserve(Request $request){
-        // dd($request);
+        dd($request);
         DB::beginTransaction();
         try{
             $getPart = $request->getPart;   //予約枠の取得
@@ -40,6 +40,7 @@ class CalendarsController extends Controller
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
 
+    // ↓↓予約キャンセル機能(2024/9/15)
     public function delete(Request $request){
         // dd($request);
         DB::beginTransaction();
