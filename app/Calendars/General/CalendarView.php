@@ -63,8 +63,13 @@ class CalendarView{
             $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{   //未来の場合かつ予約している場合
-            $html[] = '<button type="submit" class="btn btn-danger delete-modal-open p-0 w-75" name="delete_date" style="font-size:12px" value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
+            $html[] = '<button type="submit" class="btn btn-danger delete-modal-open p-0 w-75" name="delete_date" style="font-size:12px" reserveDate='.$day->everyDay().' reserveParts='.$reservePart.' value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
+            $html[] = '<input type="hidden" day='.$day->everyDay().' value="" form="reserveParts">';
+            // モーダル（js）に送る記述が必要(2024/9/24)
+            // reserveDate = "<button type="submit">"
+            // reservePart = "<button type="submit">"
+
           }
         }else{   //ログインしているユーザーが予約していない場合
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約していない場合
