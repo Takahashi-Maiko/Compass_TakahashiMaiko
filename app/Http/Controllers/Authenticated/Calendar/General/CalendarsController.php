@@ -41,7 +41,7 @@ class CalendarsController extends Controller
     }
 
     // ↓↓予約キャンセル機能(2024/9/15)
-    public function delete(Request $request){
+    public function delete2(Request $request){
         // dd($request);
         // beginTransaction(トランザクション)=データの一貫性と完全性を保護するために使用する。
         // 一貫性の確保: トランザクション内の操作は、すべてが成功した場合のみコミットされ、一部の操作が失敗した場合はロールバックされる。これにより、データベースの状態が一貫していることが保証される。
@@ -49,12 +49,13 @@ class CalendarsController extends Controller
         // 同時アクセスの問題の回避: 複数のユーザーが同時にデータベースにアクセスする場合、トランザクションを使用することで、競合状態（複数の処理が同時にデータを変更しようとする状況）を防ぐことができる。
         DB::beginTransaction();
         try{   //トランザクション内で行う操作の記述
-            $getPart = $request->getPart;   //予約枠の取得
-            $getDate = $request->getData;   //カレンダーの日付の取得
-            // dd($request->getPart, $request->getDate);
+            $getPart = $request->input('reservePart');   //予約枠の取得
+            $getDate = $request->input('reserveDate');   //カレンダーの日付の取得
+            dd($getDate, $getPart);
 
             // ↓↓配列かどうかを確認する 2024/10/6
             if (!is_array($getPart) || !is_array($getDate) || count($getPart) !== count($getDate)) {
+            // dd($getPart);
             return redirect()->back()->with('error', '無効なデータが提供されました。');
             }
 
@@ -62,13 +63,35 @@ class CalendarsController extends Controller
             $reserveDays = array_filter(array_combine($getDate, $getPart));
             foreach($reserveDays as $key => $value){
                 $reserve_settings = ReserveSettings::where('setting_reserve', $key)->where('setting_part', $value)->first();
-                $reserve_settings->increment('limit_users');   //decrement→increment変更。incrementは予約枠を増やす。2024/10/5
-                $reserve_settings->users()->detach(Auth::id());   //detach()でユーザーの関連付けを解除する。2024/10/6
+                $reserve_settings->increment('limit_users');   //decrement→increment変更。increment()は予約枠を増やす。2024/10/5
+                $reserve_settings->users()->detach(Auth::id());   //attach→detachに変更。detach()でユーザーの関連付けを解除する。2024/10/6
             }
             DB::commit();
         }catch(\Exception $e){   //トランザクションの途中でエラーが発生した場合の処理
             DB::rollback();   //変更をすべて無効にする
         }
+        // dd($getDate);
         return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
     }
+
+
+        public function delete(Request $request){
+            // dd($request);
+            $getPart = $request->input('reservePart');   //予約枠の取得
+            $getDate = $request->input('reserveDate');   //カレンダーの日付の取得
+            // dd($getDate, $getPart);
+
+
+            // $reserveDays = array_filter(array_combine($getDate, $getPart));
+            // foreach($reserveDays as $key => $value){
+                $reserve_settings = ReserveSettings::where('setting_reserve', $getDate)->where('setting_part',$getPart)->first();
+                // ↑↑setting_partカラムの情報が違うので予約枠が上手く探せていない。「リモ1部」→「1」、「リモ2部」→「2」、「リモ3部」→「3」に変える記述が必要。2024/10/11
+                // dd($reserve_settings);
+                $reserve_settings->increment('limit_users');   //decrement→increment変更。increment()は予約枠を増やす。2024/10/5
+                $reserve_settings->users()->detach(Auth::id());   //attach→detachに変更。detach()でユーザーの関連付けを解除する。2024/10/6
+            // }
+        // dd($getDate);
+        return redirect()->route('calendar.general.show', ['user_id' => Auth::id()]);
+    }
+
 }

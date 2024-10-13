@@ -8,10 +8,17 @@ $(function () {
     var reservePart = $(this).attr('reserveParts');   //予約枠(リモ1・2・3のどの枠を選択しているか)の取得
     console.log('予約日時', reserveDate);
     console.log('予約パート', reservePart);
+    if (reservePart == 'リモ1部') {
+      reservePartNumber = "1";
+    } else if (reservePart == 'リモ2部') {
+      reservePartNumber = "2";
+    } else if (reservePart == 'リモ3部') {
+      reservePartNumber = "3";
+    }
     // ↓↓送られてきたデータをモーダルに送る
     // ①データを値として送る
     $('.get_date').val(reserveDate);
-    $('.get_part').val(reservePart);
+    $('.get_part').val(reservePartNumber);
     // ②textと設定して送る
     $('.reserve_day').text(reserveDate);
     $('.reserve_part').text(reservePart);

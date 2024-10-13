@@ -59,7 +59,7 @@ class CalendarView{
             $reservePart = "リモ3部";
           }
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約している場合
-            $html[] = '<p class="">受付終了</p>';   //過去日グレーアウト
+            $html[] = '<p class="">'.$reservePart.'</p>';   //過去日グレーアウト   予約枠の表示が出来ない‼
             $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{   //未来の場合かつ予約している場合
@@ -83,6 +83,7 @@ class CalendarView{
         $html[] = '</p>';
 
           //予約キャンセル機能の実装をしたい(2024/9/7)
+          // $html[] = '<form action="/delete/calendar" method="post" id="deleteParts">'.csrf_field().'</form>';
 
       }
       $html[] = '</tr>';

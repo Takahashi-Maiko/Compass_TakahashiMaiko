@@ -36,7 +36,7 @@
         <div class="w-50 m-auto delete-modal-btn d-flex">
           <a class="js-modal-close btn btn-danger d-inline-block" href="">閉じる</a>
           <input type="hidden" class="delete-modal-hidden" name="user_name" value="">
-          <input type="submit" class="btn btn-primary d-block" value="キャンセル" form="deleteParts">
+          <input type="submit" class="btn btn-primary d-block" value="キャンセル">
           <!-- ↓↓jsから値を受け取ってControllerに送る為の記述 -->
           <input type="hidden" class="get_date" name="reserveDate">
           <input type="hidden" class="get_part" name="reservePart">
