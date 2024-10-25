@@ -59,7 +59,6 @@ class CalendarView{
             $reservePart = "リモ3部";
           }
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約している場合
-            $html[] = '<p class="">'.$reservePart.'</p>';   //過去日グレーアウト   予約枠の表示が出来ない‼
             $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{   //未来の場合かつ予約している場合

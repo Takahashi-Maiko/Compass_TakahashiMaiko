@@ -30,15 +30,23 @@ class CalendarWeekDay{
     $two_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '2')->first();
     $three_part = ReserveSettings::with('users')->where('setting_reserve', $ymd)->where('setting_part', '3')->first();
 
+    // ↓↓予約確認画面の予約人数を表示させたい(2024/10/25)
+    // ReserveSettingsモデルにusersリレーションが正しく定義されいれば変数を定義して各部の予約人数を表示できるようになります。
     $html[] = '<div class="text-left">';
+    // 1部の表示
     if($one_part){
-      $html[] = '<p class="day_part m-0 pt-1">1部</p>';
+      $userCount = $one_part->users->count(); // ユーザー数を取得
+      $html[] = '<p class="day_part m-0 pt-1">1部' . $userCount .'</p>';
     }
+    // 2部の表示
     if($two_part){
-      $html[] = '<p class="day_part m-0 pt-1">2部</p>';
+      $userCount = $two_part->users->count();
+      $html[] = '<p class="day_part m-0 pt-1">2部'. $userCount .'</p>';
     }
+    // 3部の表示
     if($three_part){
-      $html[] = '<p class="day_part m-0 pt-1">3部</p>';
+       $userCount = $three_part->users->count();
+      $html[] = '<p class="day_part m-0 pt-1">3部'. $userCount .'</p>';
     }
     $html[] = '</div>';
 
