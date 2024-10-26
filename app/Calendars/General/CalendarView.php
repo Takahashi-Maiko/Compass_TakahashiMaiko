@@ -59,7 +59,7 @@ class CalendarView{
             $reservePart = "リモ3部";
           }
           if($startDay <= $day->everyDay() && $toDay >= $day->everyDay()){   //過去の場合かつ予約している場合
-            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px"></p>';
+            $html[] = '<p class="m-auto p-0 w-75" style="font-size:12px">'. $reservePart .'</p>';
             $html[] = '<input type="hidden" name="getPart[]" value="" form="reserveParts">';
           }else{   //未来の場合かつ予約している場合
             $html[] = '<button type="submit" class="btn btn-danger delete-modal-open p-0 w-75" name="delete_date" style="font-size:12px" reserveDate='.$day->everyDay().' reserveParts='.$reservePart.' value="'. $day->authReserveDate($day->everyDay())->first()->setting_reserve .'">'. $reservePart .'</button>';
