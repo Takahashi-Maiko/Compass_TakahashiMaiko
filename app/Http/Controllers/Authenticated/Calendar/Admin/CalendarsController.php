@@ -20,9 +20,25 @@ class CalendarsController extends Controller
         return view('authenticated.calendar.admin.calendar', compact('calendar'));
     }
 
+    // ↓↓スクール予約詳細画面にデータを送る記述が必要(2024/10/26)
     public function reserveDetail($date, $part){
         $reservePersons = ReserveSettings::with('users')->where('setting_reserve', $date)->where('setting_part', $part)->get();
-        return view('authenticated.calendar.admin.reserve_detail', compact('reservePersons', 'date', 'part'));
+        // dd($date,$part);
+        // 'setting_reserve', $date=日にち
+        // 'setting_part', $part=部
+
+        // ユーザーIDと名前のリストを作成
+        $users = [];
+        foreach ($reservePersons as $reserve) {
+            foreach ($reserve->users as $user) {
+                $users[] = [
+                    'id' => $user->id,
+                    'over_name' => $user->over_name,
+                    'under_name' => $user->under_name,
+                ];
+            }
+        }
+        return view('authenticated.calendar.admin.reserve_detail', compact('reservePersons', 'date', 'part', 'users'));
     }
 
     // ↓↓スクール枠登録(2024/7/15)
