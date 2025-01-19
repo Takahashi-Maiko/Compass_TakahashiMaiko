@@ -5,21 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AtlasBulletinBoard</title>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@200;600&display=swap" rel="stylesheet">
-  <link href="{{ asset('css/style.css') }}" rel="stylesheet">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&family=Oswald:wght@200&display=swap" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+  <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 </head>
-<body>
+
+<!-- ↓↓class="all_content"を追加して背景色を変える(style.cssの10行目) 2024/11/17 -->
+<body class="all_content">
 
 
 
-  <form action="{{ route('registerPost') }}" method="POST">
-    <div class="w-100 vh-100 d-flex" style="align-items:center; justify-content:center;">
-      <div class="w-25 vh-75 border p-3">
-        <div class="register_form">
+  <form action="{{ route('registerPost') }}" method="POST" class="register_form">
+    <!-- <div class="w-100 vh-75 d-flex" style="align-items:center; justify-content:center;"> -->
+    <div class="w-100 d-flex" style="align-items:center; justify-content:center;">
+      <!-- <div class="w-25 vh-75 border p-3 register-box"> -->
+      <div class="border p-3 register-box">
+        <!-- <div class="register_form"> -->
           <div class="d-flex mt-3" style="justify-content:space-between">
             <div class="" style="width:140px">
               @if ($errors->has('over_name'))
@@ -73,39 +77,40 @@
               <input type="mail" class="w-100 border-0 mail_address" name="mail_address">
             </div>
           </div>
-        </div>
+        <!-- </div> -->
 
-        <div class="mt-3">
-          @if ($errors->has('sex'))
-           <li>{{$errors->first('sex')}}</li>
-          @endif
-          <input type="radio" name="sex" class="sex" value="1">
-          <label style="font-size:13px">男性</label>
-          <input type="radio" name="sex" class="sex" value="2">
-          <label style="font-size:13px">女性</label>
-          <input type="radio" name="sex" class="sex" value="3">
-          <label style="font-size:13px">その他</label>
-        </div>
+        <!-- ↓↓mt-3=margin topが1rem  px-5=paddingが2rem(xは左右。yだと上下を調節できる。)2024/1/13 -->
+          <div class="mt-3 register-item px-5">
+            @if ($errors->has('sex'))
+            <li>{{$errors->first('sex')}}</li>
+            @endif
+            <!-- <input type="radio" name="sex" class="sex" value="1"> -->
+            <label style="font-size:13px"><input type="radio" name="sex" class="sex" value="1">男性</label>
+            <!-- <input type="radio" name="sex" class="sex" value="2"> -->
+            <label style="font-size:13px"><input type="radio" name="sex" class="sex" value="2">女性</label>
+            <!-- <input type="radio" name="sex" class="sex" value="3"> -->
+            <label style="font-size:13px"><input type="radio" name="sex" class="sex" value="3">その他</label>
+          </div>
 
-        <div class="mt-3">
-                @if ($errors->has('birth_day'))
-                 <li>{{$errors->first('birth_day')}}</li>
-                @endif
-          <label class="d-block m-0 aa" style="font-size:13px">生年月日</label>
-          <select class="old_year" name="old_year">
-            <option value="none">-----</option>
-            <option value="1985">1985</option>
-            <option value="1986">1986</option>
-            <option value="1987">1987</option>
-            <option value="1988">1988</option>
-            <option value="1989">1989</option>
-            <option value="1990">1990</option>
-            <option value="1991">1991</option>
-            <option value="1992">1992</option>
-            <option value="1993">1993</option>
-            <option value="1994">1994</option>
-            <option value="1995">1995</option>
-            <option value="1996">1996</option>
+          <div class="mt-3 register-item">
+            @if ($errors->has('birth_day'))
+            <li>{{$errors->first('birth_day')}}</li>
+            @endif
+            <label class="d-block m-0 aa w-100" style="font-size:13px">生年月日</label>
+            <select class="old_year border-bottom border-primary" name="old_year">
+              <option value="none">-----</option>
+              <option value="1985">1985</option>
+              <option value="1986">1986</option>
+              <option value="1987">1987</option>
+              <option value="1988">1988</option>
+              <option value="1989">1989</option>
+              <option value="1990">1990</option>
+              <option value="1991">1991</option>
+              <option value="1992">1992</option>
+              <option value="1993">1993</option>
+              <option value="1994">1994</option>
+              <option value="1995">1995</option>
+              <option value="1996">1996</option>
             <option value="1997">1997</option>
             <option value="1998">1998</option>
             <option value="1999">1999</option>
@@ -122,7 +127,7 @@
             <option value="2010">2010</option>
           </select>
           <label style="font-size:13px">年</label>
-          <select class="old_month" name="old_month">
+          <select class="old_month border-bottom border-primary" name="old_month">
             <option value="none">-----</option>
             <option value="01">1</option>
             <option value="02">2</option>
@@ -138,7 +143,7 @@
             <option value="12">12</option>
           </select>
           <label style="font-size:13px">月</label>
-          <select class="old_day" name="old_day">
+          <select class="old_day border-bottom border-primary" name="old_day">
             <option value="none">-----</option>
             <option value="01">1</option>
             <option value="02">2</option>
@@ -175,11 +180,11 @@
           <label style="font-size:13px">日</label>
         </div>
 
-        <div class="mt-3">
+        <div class="mt-3 register-item">
           @if ($errors->has('role'))
-           <li>{{$errors->first('role')}}</li>
+          <li>{{$errors->first('role')}}</li>
           @endif
-          <label class="d-block m-0" style="font-size:13px">役職</label>
+          <label class="d-block m-0 w-100" style="font-size:13px">役職</label>
           <input type="radio" name="role" class="admin_role role" value="1">
           <label style="font-size:13px">教師(国語)</label>
           <input type="radio" name="role" class="admin_role role" value="2">
@@ -202,7 +207,7 @@
 
         <div class="mt-3">
           @if ($errors->has('password'))
-           <li>{{$errors->first('password')}}</li>
+          <li>{{$errors->first('password')}}</li>
           @endif
           <label class="d-block m-0" style="font-size:13px">パスワード</label>
           <div class="border-bottom border-primary">
@@ -212,7 +217,7 @@
 
         <div class="mt-3">
           @if ($errors->has('password_confirmation'))
-           <li>{{$errors->first('password_confirmation')}}</li>
+          <li>{{$errors->first('password_confirmation')}}</li>
           @endif
           <label class="d-block m-0" style="font-size:13px">確認用パスワード</label>
           <div class="border-bottom border-primary">
@@ -226,14 +231,14 @@
 
 
         <div class="text-center">
-          <a href="{{ route('loginView') }}">ログイン</a>
+          <a href="{{ route('loginView') }}">ログインはこちら</a>
         </div>
       </div>
       {{ csrf_field() }}
     </div>
   </form>
-  </div>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="{{ asset('js/register.js') }}" rel="stylesheet"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="{{ asset('js/register.js') }}" rel="stylesheet"></script>
 </body>
 </html>

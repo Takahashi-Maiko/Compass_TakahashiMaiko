@@ -1,7 +1,9 @@
+// ↓↓掲示板のカテゴリー検索のアコーディオンメニュー
 $(function () {
   $('.main_categories').click(function () {
     var category_id = $(this).attr('category_id');
     $('.category_num' + category_id).slideToggle();
+    $(this).toggleClass('active'); // クリック時にactiveクラスをトグル
   });
 
   $(document).on('click', '.like_btn', function (e) {
@@ -48,7 +50,7 @@ $(function () {
     });
   });
 
-  $('.edit-modal-open').on('click',function(){
+  $('.edit-modal-open').on('click', function () {
     $('.js-modal').fadeIn();
     var post_title = $(this).attr('post_title');
     var post_body = $(this).attr('post_body');
